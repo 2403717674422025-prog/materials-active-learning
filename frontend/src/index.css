@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #050B14;
+    color: #E8F0FA;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: rgba(89,213,204,0.18); }
+
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #273343; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #3A4F64; }
+}
+
+@layer components {
+
+  /* ── Surfaces ──────────────────────────────────────── */
+  .surface    { background: #0A1523; }
+  .surface-2  { background: #0E1C2C; }
+  .surface-3  { background: #132337; }
+
+  /* ── Cards — avoid boxing everything, use sparingly ── */
+  .card {
+    background: #0A1523;
+    border: 1px solid #1A2C40;
+    border-radius: 6px;
+  }
+  .card-flush {
+    background: #0A1523;
+    border-top: 1px solid #1A2C40;
+    border-bottom: 1px solid #1A2C40;
+  }
+  .inset {
+    background: rgba(5,11,20,0.78);
+    border: 1px solid #142437;
+    border-radius: 4px;
+  }
+
+  /* ── Section divider ─────────────────────────────────── */
+  .rule  { border: none; border-top: 1px solid #273343; }
+  .rule2 { border: none; border-top: 1px solid #1C2633; }
+
+  /* ── Typography ──────────────────────────────────────── */
+  .t-display {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #E8F0FA;
+    line-height: 1.15;
+  }
+  .t-title {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: #E8F0FA;
+  }
+  .t-section {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #5C6E82;
+  }
+  .t-label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: #5C6E82;
+  }
+  .t-meta {
+    font-size: 0.75rem;
+    color: #9AA9BA;
+    letter-spacing: 0.01em;
+  }
+  .t-mono {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-feature-settings: "tnum";
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Status dot ──────────────────────────────────────── */
+  .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .dot-teal   { background: #59D5CC; }
+  .dot-vio    { background: #A99BFF; }
+  .dot-amber  { background: #EDAB60; }
+  .dot-ok     { background: #41D98C; }
+  .dot-err    { background: #F06565; }
+  .dot-idle   { background: #3A4F64; }
+  .dot-live   { background: #59D5CC; animation: blink 1.8s ease-in-out infinite; }
+  @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
+
+  /* ── Badges ──────────────────────────────────────────── */
+  .chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 1px 7px; border-radius: 3px;
+    font-size: 0.6875rem; font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .chip-teal  { background: rgba(89,213,204,0.10); color: #59D5CC; border: 1px solid rgba(89,213,204,0.2); }
+  .chip-vio   { background: rgba(169,155,255,0.10); color: #A99BFF; border: 1px solid rgba(169,155,255,0.2); }
+  .chip-amber { background: rgba(237,171,96,0.10);  color: #EDAB60;  border: 1px solid rgba(237,171,96,0.2); }
+  .chip-ok    { background: rgba(65,217,140,0.10);  color: #41D98C;  border: 1px solid rgba(65,217,140,0.2); }
+  .chip-err   { background: rgba(240,101,101,0.10); color: #F06565;  border: 1px solid rgba(240,101,101,0.2); }
+  .chip-idle  { background: rgba(58,79,100,0.25);   color: #9AA9BA;  border: 1px solid #273343; }
+
+  /* ── Buttons ──────────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 6px 14px; border-radius: 5px;
+    font-size: 0.8125rem; font-weight: 500;
+    transition: all 0.12s; cursor: pointer;
+    border: none; outline: none; white-space: nowrap;
+    font-family: inherit;
+  }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn:focus-visible { outline: 2px solid #59D5CC; outline-offset: 2px; }
+
+  .btn-teal {
+    background: #20DCE8; color: #050B14; font-weight: 600;
+  }
+  .btn-teal:hover:not(:disabled) { background: #54E7EF; }
+
+  .btn-vio {
+    background: #A99BFF; color: #090D14; font-weight: 600;
+  }
+  .btn-vio:hover:not(:disabled) { background: #BDB2FF; }
+
+  .btn-ghost {
+    background: transparent; border: 1px solid #273343; color: #9AA9BA;
+  }
+  .btn-ghost:hover:not(:disabled) { background: #171F2B; border-color: #3A4F64; color: #F3F5F8; }
+
+  .btn-panel {
+    background: #171F2B; border: 1px solid #273343; color: #F3F5F8;
+  }
+  .btn-panel:hover:not(:disabled) { background: #1D2736; border-color: #3A4F64; }
+
+  /* ── Inputs ───────────────────────────────────────────── */
+  .input {
+    background: #07111D; border: 1px solid #1A2C40; color: #E8F0FA;
+    border-radius: 5px; padding: 7px 11px;
+    font-size: 0.8125rem; width: 100%;
+    transition: border-color 0.12s; outline: none; font-family: inherit;
+  }
+  .input::placeholder { color: #3A4F64; }
+  .input:focus { border-color: #59D5CC; box-shadow: 0 0 0 2px rgba(89,213,204,0.1); }
+  .input:hover:not(:focus) { border-color: #3A4F64; }
+  select.input { cursor: pointer; }
+
+  /* ── Table ────────────────────────────────────────────── */
+  .tbl { width: 100%; border-collapse: collapse; }
+  .tbl th {
+    padding: 7px 10px; font-size: 0.6875rem; font-weight: 500;
+    letter-spacing: 0.07em; text-transform: uppercase; color: #5C6E82;
+    border-bottom: 1px solid #1A2C40; background: #0A1523;
+    text-align: left; position: sticky; top: 0; z-index: 1;
+  }
+  .tbl td { padding: 7px 10px; font-size: 0.8125rem; color: #A9B9CD; border-bottom: 1px solid #142437; }
+  .tbl tbody tr:hover td { background: rgba(255,255,255,0.018); color: #F3F5F8; }
+  .tbl tbody tr:last-child td { border-bottom: none; }
+
+  /* ── Skeleton ─────────────────────────────────────────── */
+  @keyframes sk { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+  .sk {
+    background: linear-gradient(90deg, #171F2B 25%, #1D2736 50%, #171F2B 75%);
+    background-size: 200% 100%; animation: sk 1.4s infinite; border-radius: 3px;
+  }
+
+  /* ── Misc utils ───────────────────────────────────────── */
+  .overflow-x { overflow-x: auto; }
+  .overflow-y { overflow-y: auto; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* ── Stat strip item (used in overview) ──────────────── */
+  .stat-item {
+    display: flex; flex-direction: column; gap: 1px;
+    padding: 0 20px; border-right: 1px solid #1C2633;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-val { font-family: 'JetBrains Mono','Fira Code',monospace; font-size: 1.125rem; font-weight: 700; line-height: 1.2; }
+}
+
+@layer components {
+  .app-shell { background: #050B14; }
+  .app-sidebar { background: #07111D; border-color: #142437; }
+  .app-topbar { background: rgba(7,17,29,.92); border-color: #142437; }
+  .workspace-heading { letter-spacing: -.025em; }
+}
+
+@media (max-width: 760px) {
+  .app-sidebar { width: 54px !important; }
+  .app-sidebar > nav { padding-left: 5px; padding-right: 5px; }
+  .app-sidebar > nav > div:first-child,
+  .app-sidebar a span { display: none; }
+  .app-sidebar a { justify-content: center; padding-left: 0; padding-right: 0; }
+  .app-topbar { padding-left: 12px; padding-right: 12px; }
+  .stat-item { padding-left: 10px; padding-right: 10px; }
+}
+
+@media (max-width: 980px) {
+  .workspace-rail { width: 215px; }
+}
+@media (max-width: 720px) {
+  .workspace-rail { display: none; }
+  .workspace-heading { font-size: 1.05rem !important; }
+}

@@ -1,0 +1,36 @@
+# Core backend
+fastapi==0.111.0
+starlette==0.37.2
+uvicorn[standard]==0.29.0
+pydantic==2.7.1
+pydantic-settings==2.3.0
+
+# Database
+sqlalchemy==2.0.30
+alembic==1.13.1
+
+# ML — core
+scikit-learn==1.5.0
+shap==0.46.0
+optuna==4.4.0
+numpy==1.26.4
+pandas==2.2.2
+scipy==1.13.1
+joblib==1.4.2
+
+# ML — materials featurization
+matminer==0.9.2
+pymatgen==2024.6.10
+
+# ML — gradient boosting (optional baseline)
+xgboost==2.0.3
+
+# Data handling
+python-multipart==0.0.9
+
+# Testing
+pytest==8.2.1
+pytest-asyncio==0.23.7
+httpx==0.27.0
+psycopg2-binary==2.9.9
+setuptools==80.9.0

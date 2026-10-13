@@ -1,0 +1,95 @@
+version: "3.9"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Uncertainty-Guided Bayesian Active Learning for Materials Discovery
+# Docker Compose — local development & production
+#
+# Usage:
+#   docker compose up --build          # start all services
+#   docker compose up --build backend  # backend only (SQLite mode)
+#   docker compose down -v             # stop and remove volumes
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # ── PostgreSQL database ─────────────────────────────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    container_name: materials_al_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aluser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-alpassword}
+      POSTGRES_DB: ${POSTGRES_DB:-materials_al}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aluser}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── FastAPI backend ──────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: materials_al_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # PostgreSQL connection
+      DATABASE_URL: postgresql://${POSTGRES_USER:-aluser}:${POSTGRES_PASSWORD:-alpassword}@postgres:5432/${POSTGRES_DB:-materials_al}
+      # Override for SQLite (comment out DATABASE_URL above and use this instead):
+      # DATABASE_URL: sqlite:///./materials_al.db
+      SECRET_KEY: ${SECRET_KEY:-change-me-in-production-use-a-long-random-string}
+      DEBUG: ${DEBUG:-false}
+      ALLOWED_ORIGINS: '["http://localhost:5173","http://localhost:80","http://frontend"]'
+      UPLOAD_DIR: /app/uploads
+      MODEL_DIR: /app/models
+      DATASET_CACHE_DIR: /app/data/processed
+    
+    volumes:
+      - backend_uploads:/app/uploads
+      - ./models:/app/models
+      - ./data/processed:/app/data/processed
+      - ./data/raw:/app/data/raw
+
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s   # allow time for matminer import
+
+  # ── React frontend ───────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: /api
+    container_name: materials_al_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:80/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  postgres_data:
+  backend_uploads:
+  backend_models:
+  dataset_cache:
+  dataset_raw:
